@@ -47,7 +47,10 @@ namespace WorkWithFile
                 fileInfo.Create();
             }
 
-
+            Console.WriteLine("1 AZE12345671 500.35");
+            Console.WriteLine("2 AZE12345672 1000.15");
+            Console.WriteLine("3 AZE12345673 350.75");
+            Console.WriteLine("4 AZE12345674 800.25");
             string writePath = @"C:\Dovrushov3\note5.txt";
 
             //Идет читание.
