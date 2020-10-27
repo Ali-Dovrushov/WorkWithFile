@@ -1,9 +1,9 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.IO;
 using System.Threading.Tasks;
 
-namespace WorkWithFile
+namespace ConsoleApp11
 {
     class Person
     {
@@ -26,10 +26,10 @@ namespace WorkWithFile
         static async Task Main(string[] args)
         {
             //Перезаписанные данные.
-            Person client1 = new Person(1, "AZE12345671", 500.35);
-            Person client2 = new Person(2, "AZE12345672", 1000.15);
-            Person client3 = new Person(3, "AZE12345673", 350.75);
-            Person client4 = new Person(4, "AZE12345674", 800.25);
+            Person client1 = new Person(1, "AZE12345671", 600.35);
+            Person client2 = new Person(2, "AZE12345672", 1300.15);
+            Person client3 = new Person(3, "AZE12345673", 450.75);
+            Person client4 = new Person(4, "AZE12345674", 860.25);
 
             //Создаем папку.
             string path = @"C:\Dovrushov3";
@@ -38,28 +38,37 @@ namespace WorkWithFile
             {
                 dirInfo.Create();
             }
+            //Первоначальная запись.
+            string text = "1 AZE12345671 500.35\n2 AZE12345672 1000.15\n3 AZE12345673 350.75\n4 AZE12345674 800.25";
 
             //Создаём первый текстовый редактор.
             string path2 = @"C:\Dovrushov3\note4.txt";
             FileInfo fileInfo = new FileInfo(path2);
             if (!fileInfo.Exists)
             {
-                fileInfo.Create();
+                //Записываем данные в первый текстовый редактор.
+                try
+                {
+                    using (StreamWriter writer1 = new StreamWriter(path2, false, System.Text.Encoding.Default))
+                    {
+                        Console.WriteLine("Начальная запись.\n");
+                        writer1.WriteLine(text);
+                    }
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.Message);
+                }
+                //fileInfo.Create();
             }
 
-            Console.WriteLine("1 AZE12345671 500.35");
-            Console.WriteLine("2 AZE12345672 1000.15");
-            Console.WriteLine("3 AZE12345673 350.75");
-            Console.WriteLine("4 AZE12345674 800.25");
-            string writePath = @"C:\Dovrushov3\note5.txt";
-
-            //Идет читание.
+            //Идёт чтение.
             try
             {
-                using (StreamReader sr = new StreamReader(path2))
+                using (StreamReader writer1 = new StreamReader(path2))
                 {
-                    Console.WriteLine(sr.ReadToEnd());
-                    sr.Close();
+                    Console.WriteLine(writer1.ReadToEnd());
+                    writer1.Close();
                 }
             }
             catch (Exception e)
@@ -67,18 +76,19 @@ namespace WorkWithFile
                 Console.WriteLine(e.Message);
             }
 
-            //Идет перезапись.
+            string writePath = @"C:\Dovrushov3\note5.txt";
+
+            //Идёт перезапись.
             try
             {
                 using (StreamWriter writer = File.CreateText(writePath))
                 {
-
-                    Console.WriteLine("\nИдёт перезапись...");
+                    Console.WriteLine("Идёт перезапись...");
                     writer.WriteLine(client1.Metod());
                     writer.WriteLine(client2.Metod());
                     writer.WriteLine(client3.Metod());
                     writer.WriteLine(client4.Metod());
-                    Console.WriteLine("\nПерезапись выполнена.");
+                    Console.WriteLine("\nПерезапись выполнена.\n");
                     writer.Close();
                 }
             }
@@ -87,7 +97,7 @@ namespace WorkWithFile
                 Console.WriteLine(e.Message);
             }
 
-            //Идет читание перезаписи.
+            //Идёт чтение перезаписи.
             try
             {
                 using (StreamReader sr = new StreamReader(writePath))
